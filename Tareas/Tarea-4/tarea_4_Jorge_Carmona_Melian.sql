@@ -25,12 +25,11 @@ INSERT INTO Departamento VALUES ("7","literatura","200000");
 INSERT INTO Departamento VALUES ("8","historia","100000");
 INSERT INTO Departamento VALUES ("9","biologia","70000");
 INSERT INTO Departamento VALUES ("10","enfermeria","80000");
-INSERT INTO Departamento VALUES ("11","medicina","94000");
 
 INSERT INTO Empleado VALUES ("72839475","Pepe","López","2");
 INSERT INTO Empleado VALUES ("95827403","Juan","Garcia","10");
 INSERT INTO Empleado VALUES ("39857576","Marcos","Perez","1");
-INSERT INTO Empleado VALUES ("00000000","Esther","Vázquez","11");
+INSERT INTO Empleado VALUES ("00000000","Esther","Vázquez","10");
 INSERT INTO Empleado VALUES ("32874365","Manuel","Page","4");
 INSERT INTO Empleado VALUES ("54546466","Javier","Remedios","1");
 INSERT INTO Empleado VALUES ("24345637","Lucas","Hotzel","8");
@@ -62,6 +61,8 @@ SELECT * FROM Empleado WHERE apeillido IN ("López","Perez");
 
 SELECT * FROM Empleado WHERE ref_departamento = "10";
 
+SELECT empleado.nombre, departamento.nombre FROM empleado, departamento WHERE departamento.id = empleado.ref_departamento AND ref_departamento = "10"
+
 --- 8. Obtener todos los datos de los empleados que trabajan para el departamento 8 y para el departamento 5.
 
 SELECT * FROM Empleado WHERE ref_departamento IN ("8","5");
@@ -92,8 +93,32 @@ SELECT Empleado.nombre, Empleado.apeillido FROM Empleado, Departamento WHERE Dep
 
 --- 15. Obtener los datos de los departamentos cuyo presupuesto es superior al presupuesto medio de todos los departamentos.
 
-SELECT * FROM Departamento WHERE presupuesto > (SELECT AVG(presupuesto) FROM Departamento)
+SELECT * FROM Departamento WHERE presupuesto > (SELECT AVG(presupuesto) FROM Departamento);
 
 --- 16. Obtener los nombres (únicamente los nombres) de los departamentos que tiene más de dos empleados.
-
+???????????????????
 SELECT Departamento.nombre FROM Departamento, Empleado WHERE Departamento.id = Empleado.ref_departamento AND Empleado.ref_departamento (SELECT ref_departamento, count(*) as n FROM Empleado GROUP BY ref_departamento HAVING n > 1 )
+
+--- 17. Añadir un nuevo departamento: “Calidad”, con presupuesto de 40.000 € y código 11.
+
+INSERT INTO Departamento VALUES ("11","Calidad","40000");
+
+--- 18. Añadir un empleado vinculado al departamento recién creado: Esther Vázquez, DNI:00000000.
+
+UPDATE Empleado SET ref_departamento = "11" WHERE dni = "00000000";
+
+--- 19. Calcular un recorte presupuestario del 10 % a todos los departamentos.
+
+SELECT presupuesto - (presupuesto * 10 / 100) FROM Departamento
+
+--- 20. Despedir a todos los empleados que trabajan para el departamento de informática (código 2).
+
+DELETE FROM Empleado WHERE ref_departamento = "2";
+
+--- 21. Despedir a todos los empleados que trabajen para departamentos cuyo presupuesto sea superior a los 60.000 €.
+
+DELETE FROM Empleado WHERE ref_departamento = (SELECT id FROM Departamento WHERE presupuesto > 60000);
+
+--- 22. Despedir a todos los empleados.
+
+DELETE FROM Empleado;
