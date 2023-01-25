@@ -61,8 +61,6 @@ SELECT * FROM Empleado WHERE apeillido IN ("López","Perez");
 
 SELECT * FROM Empleado WHERE ref_departamento = "10";
 
-SELECT empleado.nombre, departamento.nombre FROM empleado, departamento WHERE departamento.id = empleado.ref_departamento AND ref_departamento = "10"
-
 --- 8. Obtener todos los datos de los empleados que trabajan para el departamento 8 y para el departamento 5.
 
 SELECT * FROM Empleado WHERE ref_departamento IN ("8","5");
