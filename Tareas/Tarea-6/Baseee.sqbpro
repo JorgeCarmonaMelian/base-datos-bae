@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/home/jorge/Tareas/base-datos-bae/base-datos-bae/Tareas/Tarea-6/Base" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="996"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,8:mainArticulo"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Articulo" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="43"/><column index="2" value="189"/><column index="3" value="50"/><column index="4" value="124"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Fabricante" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="43"/><column index="2" value="61"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="tarea_6_Jorge_Carmona_Melian.sql">-- sentencia sql de creación de la/s tabla/s de la bbdd
+
+CREATE TABLE Fabricante(
+	clave TEXT PRIMARY KEY,
+	nombre TEXT
+);
+
+CREATE TABLE Articulo(
+	clave INT PRIMARY KEY,
+	nombre TEXT,
+	precio INT,
+    clave_fabricante TEXT REFERENCES Fabricante (clave)
+);
+
+-- sentencia sql para la inserción de datos
+
+INSERT INTO fabricante VALUES (1 ,
+&quot;Kingston&quot;);
+INSERT INTO fabricante VALUES (2 ,
+&quot;Adata&quot;);
+INSERT INTO fabricante VALUES (3 ,
+&quot;Logitech&quot;);
+INSERT INTO fabricante VALUES (4 ,
+&quot;Lexar&quot;);
+INSERT INTO fabricante VALUES (5 ,
+&quot;Seagate&quot;);
+
+INSERT INTO Articulo VALUES (&quot;1&quot;, &quot;Teclado&quot;, &quot;100&quot;, &quot;3&quot;);
+INSERT INTO Articulo VALUES (&quot;2&quot;, &quot;Disco duro 300 Gb&quot;, &quot;500&quot;, &quot;5&quot;);
+INSERT INTO Articulo VALUES (&quot;3&quot;, &quot;Mouse&quot;, &quot;80&quot;, &quot;3&quot;);
+INSERT INTO Articulo VALUES (&quot;4&quot;, &quot;Memoria USB&quot;, &quot;140&quot;, &quot;4&quot;);
+INSERT INTO Articulo VALUES (&quot;5&quot;, &quot;Memoria RAM 290&quot;, &quot;1&quot;, NULL);
+INSERT INTO Articulo VALUES (&quot;6&quot;, &quot;Disco duro extraible 250 Gb&quot;, &quot;650&quot;, &quot;5&quot;);
+INSERT INTO Articulo VALUES (&quot;7&quot;, &quot;Memoria USB&quot;, &quot;279&quot;, &quot;1&quot;);
+INSERT INTO Articulo VALUES (&quot;8&quot;, &quot;DVD Rom&quot;, &quot;450&quot;, &quot;2&quot;);
+INSERT INTO Articulo VALUES (&quot;9&quot;, &quot;CD Rom&quot;, &quot;200&quot;, &quot;2&quot;);
+INSERT INTO Articulo VALUES (&quot;10&quot;, &quot;Tarjeta de red&quot;, &quot;180&quot;, &quot;3&quot;);
+
+-- Sentencia sql para cada una de las consultas especificadas.
+
+--- 1.Obtener todos los datos de los productos de la tienda.
+
+SELECT * FROM Articulo;
+
+--- 2.Obtener los nombres de los productos de la tienda.
+
+SELECT nombre FROM Articulo;
+
+--- 3.Obtener los nombres y precio de los productos de la tienda. Obtener los nombres de los artículos sin repeticiones.
+
+SELECT nombre, precio FROM Articulo GROUP BY nombre ORDER BY clave;
+
+--- 4.Obtener todos los datos del artículo cuya clave de producto es 5.
+
+SELECT * FROM Articulo WHERE clave = &quot;5&quot;;
+
+--- 5.Obtener todos los datos del artículo cuyo nombre del producto es Teclado.
+
+SELECT * FROM Articulo WHERE nombre = &quot;Teclado&quot;;
+
+--- 6.Obtener todos los datos de la Memoria RAM y memorias USB.
+
+SELECT * FROM Articulo WHERE nombre LIKE &quot;%RAM%&quot; OR nombre LIKE &quot;%USB%&quot;;
+
+--- 7.Obtener todos los datos de los artículos que empiezan con M.
+
+SELECT * FROM Articulo WHERE nombre LIKE &quot;M%&quot;;
+
+--- 8.Obtener el nombre de los productos donde el precio sea 100.
+
+SELECT * FROM Articulo WHERE precio = &quot;100&quot;;
+
+--- 9.Obtener el nombre de los productos donde el precio sea mayor a 200.
+
+SELECT * FROM Articulo WHERE precio &gt; &quot;200&quot;;
+
+--- 10.Obtener todos los datos de los artículos cuyo precio este entre 100 y 350.
+
+SELECT * FROM Articulo WHERE precio &gt; &quot;100&quot; AND precio &lt; &quot;350&quot;;
+
+--- 11.Obtener el precio medio de todos los productos.
+
+SELECT AVG(precio) FROM Articulo;
+
+--- 12.Obtener el precio medio de los artículos cuyo código de fabricante sea 2.
+
+SELECT AVG(precio) FROM Articulo WHERE clave_fabricante = &quot;2&quot;;
+
+--- 13.Obtener el nombre y precio de los artículos ordenados por Nombre.
+
+SELECT nombre, precio FROM Articulo ORDER BY nombre;
+
+--- 14.Obtener todos los datos de los productos ordenados descendentemente por Precio.
+
+SELECT * FROM Articulo ORDER BY precio DESC;
+
+--- 15.Obtener el nombre y precio de los artículos cuyo precio sea mayor a 250 y ordenarlos descendentemente por precio y luego ascendentemente por nombre.
+
+SELECT nombre, precio FROM Articulo WHERE precio &gt; &quot;250&quot; ORDER BY precio DESC;
+SELECT nombre, precio FROM Articulo WHERE precio &gt; &quot;250&quot; ORDER BY nombre ASC;
+
+--- 16.Obtener un listado completo de los productos, incluyendo por cada articulo los datos del articulo y del fabricante.
+
+SELECT * FROM Articulo, Fabricante WHERE Articulo.clave_fabricante = Fabricante.clave;
+
+--- 17.Obtener la clave de producto, nombre del producto y nombre del fabricante de todos los productos en venta.
+
+SELECT Articulo.clave, Articulo.nombre, Fabricante.nombre FROM Articulo, Fabricante WHERE Articulo.clave_fabricante = Fabricante.clave;
+
+--- 18.Obtener el nombre y precio de los artículos donde el fabricante sea Logitech ordenarlos alfabéticamente por nombre del producto.
+
+SELECT Articulo.nombre, Articulo.precio, Fabricante.nombre FROM Articulo, Fabricante WHERE Articulo.clave_fabricante = Fabricante.clave AND Fabricante.nombre = &quot;Logitech&quot; ORDER BY Articulo.nombre;
+
+--- 19.Obtener el nombre, precio y nombre de fabricante de los productos que son marca Lexar o Kingston ordenados descendentemente por precio.
+
+SELECT Articulo.nombre, Articulo.precio, Fabricante.nombre FROM Articulo, Fabricante WHERE Articulo.clave_fabricante = Fabricante.clave AND Fabricante.nombre IN (&quot;Lexar&quot;,&quot;Kingston&quot;) ORDER BY Articulo.precio DESC;
+
+--- 20.Añade un nuevo producto: Clave del producto 11, Altavoces de 120 del fabricante 2.
+
+INSERT INTO Articulo VALUES (&quot;11&quot;,&quot;Altavoces&quot;, &quot;120&quot;, &quot;2&quot;);
+
+--- 21.Cambia el nombre del producto 6 a Impresora Laser.
+
+UPDATE Articulo SET nombre = &quot;Impresora Laser&quot; WHERE clave = &quot;6&quot;;
+
+--- 22.Aplicar un descuento del 10% a todos los productos.
+
+UPDATE Articulo SET precio = precio - precio*10 / 100;
+
+--- 23.Aplicar un descuento de 10 a todos los productos cuyo precio sea mayor o igual a 300.
+
+UPDATE Articulo SET precio = precio - 10 WHERE precio &gt;= 300;
+
+--- 24.Borra el producto número 6.
+
+DELETE FROM Articulo WHERE clave = &quot;6&quot;;</sql><current_tab id="0"/></tab_sql></sqlb_project>
