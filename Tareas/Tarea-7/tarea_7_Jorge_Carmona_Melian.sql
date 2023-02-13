@@ -40,3 +40,4 @@ SELECT count(id_despacho) FROM Director GROUP BY id_despacho;
 SELECT * FROM Director WHERE director_jefe IN (SELECT dni FROM Director WHERE director_jefe IS NULL);
 
 SELECT d1.nombre,d2.nombre FROM Director as d1, Director as d2 WHERE d2.dni = d1.director_jefe;
+
